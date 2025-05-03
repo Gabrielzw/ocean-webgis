@@ -1,8 +1,8 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Index from '~/views/Index.vue'
+import Index from '~/views/index.vue'
 import About from '~/views/AboutView.vue'
 import NotFound from '~/views/404.vue'
-import Login from '~/views/Login.vue'
+import Login from '~/views/login.vue'
 
 import FIndex from '../layouts/FIndex.vue'
 import AboutView from '../views/AboutView.vue'
