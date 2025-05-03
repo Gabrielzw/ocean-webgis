@@ -34,7 +34,7 @@ import { appStore } from '~/store/index.js';
 
 import { useRouter } from "vue-router";
 import { toast } from "~/composables/util";
-import { showModal } ftom '~/composables/util'
+import { showModal } from '~/composables/util'
 
 const store = appStore();
 const router = useRouter()

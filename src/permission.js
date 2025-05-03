@@ -1,11 +1,14 @@
 import router from '~/router'
 
 import { getToken } from "~/composables/auth";
-import { toast } from "~/composables/util";
+import { toast, showFullLoading, hideFullLoading } from "~/composables/util";
 import { appStore } from "~/store/index.js";
 
 // 全局前置守卫
 router.beforeEach((to, from, next)=>{
+    // 显示loading
+    showFullLoading()
+
     const token = getToken()
     // console.log(token)
     // 没有登录，则强制跳转回登录页
@@ -20,5 +23,11 @@ router.beforeEach((to, from, next)=>{
     }
 
     next()
+})
+
+// 全局后置守卫
+router.afterEach((to, from)=>{
+    // 隐藏loading
+    hideFullLoading()
 })
 

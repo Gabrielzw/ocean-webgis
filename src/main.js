@@ -23,4 +23,6 @@ import 'virtual:windi.css'
 
 import './permission'
 
+import 'nprogress/nprogress.css'
+
 app.mount('#app')

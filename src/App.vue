@@ -5,6 +5,10 @@
   <router-view />
 </template>
 
-<style scoped>
+<style>
+#nprogress .bar {
+  background-color: #ff8faf !important;
+  height: 2px !important;
+}
 
 </style>
