@@ -11,7 +11,7 @@
       <el-dropdown class="dropdown" @command="handleCommand">
         <span class="flex items-center text-light-50">
           <el-avatar class="mr-2" :size="25" :src="'https://vuejs.org/logo.svg'" />
-          {{ "admin" }}
+          {{ store.username }}
           <el-icon class="el-icon--right">
             <arrow-down />
           </el-icon>
