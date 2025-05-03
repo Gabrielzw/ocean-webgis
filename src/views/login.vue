@@ -13,7 +13,7 @@
       <div>
         <span class="line"></span>
       </div>
-      
+
       <el-form ref="formRef" :rules="rules" :model="form" class="w-[250px]">
         <el-form-item prop="username">
           <el-input v-model="form.username" placeholder="用户名">
@@ -36,7 +36,7 @@
         </el-form-item>
 
         <div class="max-h-screen text-right mb-1">
-          <el-link type="default" @click="isRegistering=true">注册</el-link>
+          <el-link type="default" @click="isRegistering = true">注册</el-link>
         </div>
 
         <el-form-item>
@@ -51,7 +51,7 @@
       <div>
         <span class="line"></span>
       </div>
-      
+
       <el-form ref="formRef" :rules="rules" :model="form" class="w-[250px]">
         <el-form-item prop="username">
           <el-input v-model="form.username" placeholder="用户名">
@@ -88,7 +88,7 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button round color="#e11d48" class="w-[250px]" type="primary" @click="isRegistering=false">取 消</el-button>
+          <el-button round color="#e11d48" class="w-[250px]" type="primary" @click="isRegistering = false">取 消</el-button>
         </el-form-item>
       </el-form>
     </el-col>
@@ -97,7 +97,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted, onBeforeUnmount } from 'vue';
 import { useRouter } from "vue-router";
 import { useLocalStorage } from "@vueuse/core";
 import { useCookies } from '@vueuse/integrations/useCookies';
@@ -139,18 +139,19 @@ const rules = {
 const formRef = ref(null)
 
 const handleLogin = () => {
+  console.log('handleLogin')
   formRef.value.validate((valid) => {
     if (valid) {
-      if(!users.value.some(user => user.username == form.username)){
+      if (!users.value.some(user => user.username == form.username)) {
         toast('错误', '用户名不存在！', 'error')
         return false
       }
-      if(users.value.find(user => user.username == form.username).password != form.password){
+      if (users.value.find(user => user.username == form.username).password != form.password) {
         toast('错误', '密码错误！', 'error')
         return false
       }
 
-      store.login({username: form.username})
+      store.login({ username: form.username })
       toast('成功', '登录成功', 'success')
       router.push('/')
     } else {
@@ -169,7 +170,7 @@ const handleRegister = () => {
     toast('错误', '密码不能为空', 'error')
     return
   }
-  else if (form.password !== form.confirmPassword || form.confirmPassword=='') {
+  else if (form.password !== form.confirmPassword || form.confirmPassword == '') {
     toast('错误', '密码不一致', 'error')
     return
   }
@@ -197,31 +198,55 @@ const handleRegister = () => {
   // }
 }
 
+function onKeyUp(event) {
+  if (event.key === 'Enter') {
+    handleLogin()
+  }
+}
+
+// 添加键盘监听
+onMounted(() => {
+  document.addEventListener('keyup', onKeyUp)
+});
+
+// 移除键盘监听
+onBeforeUnmount(() => {
+  document.removeEventListener('keyup', onKeyUp)
+});
+
 </script>
 
 <style scoped>
 .login-container {
   @apply min-h-screen bg-indigo-500;
 }
-.login-container .left, .login-container .right{
+
+.login-container .left,
+.login-container .right {
   @apply flex items-center justify-center;
 }
-.login-container .right{
+
+.login-container .right {
   @apply bg-light-50 flex-col;
 }
-.left>div>div:first-child{
+
+.left>div>div:first-child {
   @apply font-bold text-5xl text-light-50 tracking-widest mb-4;
 }
-.left>div>div:last-child{
+
+.left>div>div:last-child {
   @apply text-gray-200 text-2xl tracking-widest;
 }
-.right .title{
+
+.right .title {
   @apply font-bold text-3xl text-gray-800 tracking-widest;
 }
-.right>div{
+
+.right>div {
   @apply flex items-center justify-center mb-7;
 }
-.right .line{
+
+.right .line {
   @apply h-[5px] w-16 bg-cyan-200;
 }
 </style>
