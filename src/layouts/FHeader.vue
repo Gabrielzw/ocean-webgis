@@ -34,6 +34,7 @@ import { appStore } from '~/store/index.js';
 
 import { useRouter } from "vue-router";
 import { toast } from "~/composables/util";
+import { showModal } ftom '~/composables/util'
 
 const store = appStore();
 const router = useRouter()
@@ -44,9 +45,11 @@ const handleCommand = (command) => {
       ElMessage({ message: '修改密码', type: 'success' });
       break;
     case 'logout':
-      store.logout();
-      router.push('/login');
-      toast('成功', '已退出登录', 'success');
+      showModal('是否要退出登录？').then(res=>{
+        store.logout();
+        router.push('/login');
+        toast('成功', '已退出登录', 'success');
+      })
       break;
     default:
       break;
