@@ -1,4 +1,4 @@
-import { ElNotification } from "element-plus";
+import { ElNotification, ElMessageBox } from "element-plus";
 
 // 消息提示
 export function toast(
@@ -15,6 +15,16 @@ export function toast(
     });
 }
 
-
+export function showModal(content='提示内容', type='warning', title=''){
+    return ElMessageBox.confirm(
+        content,
+        title,
+        {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type,
+        }
+    )
+}
 
 
