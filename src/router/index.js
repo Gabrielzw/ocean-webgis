@@ -11,7 +11,8 @@ import component from 'element-plus/es/components/tree-select/src/tree-select-op
 const routes = [
   { 
     path: '/', 
-    component: Index, 
+    component: Index,
+    meta: { title: '首页' }, 
   },
   { 
     path: '/about', 
@@ -20,11 +21,13 @@ const routes = [
   {
     path: '/login',
     component: Login,
+    meta: { title: '登录' },
   },
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: NotFound
+    component: NotFound,
+    meta: { title: '404' },
   }
   // {
   //   path: '/login',

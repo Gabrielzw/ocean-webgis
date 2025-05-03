@@ -22,6 +22,10 @@ router.beforeEach((to, from, next)=>{
         return next({ path: from.path ? from.path : '/' })
     }
 
+    // 设置页面标题
+    let title = (to.meta.title ? to.meta.title : '') + '-渤海赤潮监测WebGIS'
+    document.title = title
+
     next()
 })
 
