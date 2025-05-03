@@ -18,11 +18,6 @@ router.beforeEach((to, from, next)=>{
     if(token && to.path == '/login'){
         return next({ path: from.path ? from.path : '/' })
     }
-    
-    // 如果用户登录，自动获取用户信息，并存储在pinia中
-    if(token && appStore.isLoggedIn){
-
-    }
 
     next()
 })
