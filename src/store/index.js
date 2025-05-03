@@ -39,6 +39,7 @@ export const appStore = defineStore('app', {
         logout() {
             this.username = '';
             this.isLoggedIn = false;
+            removeToken();
         },
     },
     persist: true,

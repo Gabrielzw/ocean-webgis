@@ -102,7 +102,6 @@ import { useRouter } from "vue-router";
 import { useLocalStorage } from "@vueuse/core";
 import { useCookies } from '@vueuse/integrations/useCookies';
 
-import { setToken } from '~/composables/auth';
 import { toast } from "~/composables/util";
 import { appStore } from '~/store/index.js';
 

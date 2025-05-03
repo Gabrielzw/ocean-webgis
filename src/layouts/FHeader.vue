@@ -29,6 +29,30 @@
 </template>
 
 <script setup>
+import { ElMessage } from 'element-plus';
+import { appStore } from '~/store/index.js';
+
+import { useRouter } from "vue-router";
+import { toast } from "~/composables/util";
+
+const store = appStore();
+const router = useRouter()
+
+const handleCommand = (command) => {
+  switch (command) {
+    case 'rePassword':
+      ElMessage({ message: '修改密码', type: 'success' });
+      break;
+    case 'logout':
+      store.logout();
+      router.push('/login');
+      toast('成功', '已退出登录', 'success');
+      break;
+    default:
+      break;
+  }
+}
+
 
 </script>
 
