@@ -104,6 +104,10 @@ import { useCookies } from '@vueuse/integrations/useCookies';
 
 import { setToken } from '~/composables/auth';
 import { toast } from "~/composables/util";
+import { appStore } from '~/store/index.js';
+
+// 用户信息，网页状态
+const store = appStore();
 
 // 使用 useLocalStorage 自动处理响应式和本地存储
 const users = useLocalStorage('users', [])
@@ -138,6 +142,15 @@ const handleLogin = () => {
   formRef.value.validate((valid) => {
     if (valid) {
       // TODO: 检查用户名和密码是否匹配
+      if(!users.value.some(user => user.username == form.username)){
+        toast('错误', '用户名不存在！', 'error')
+        return false
+      }
+      store.updateUserInfo({username: form.username})
+      // 2. 设置 cookie
+      let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) // 生成随机 token
+      setToken(token)
+      
       toast('成功', '登录成功', 'success')
       router.push('/')
     } else {
@@ -170,10 +183,6 @@ const handleRegister = () => {
     password: form.password, // 实际项目中密码应该加密
     createdAt: new Date().toISOString()
   })
-  
-  // 2. 设置 cookie
-  let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) // 生成随机 token
-  setToken(token)
 
   toast('成功', '注册成功', 'success')
 
@@ -182,10 +191,10 @@ const handleRegister = () => {
   form.confirmPassword = ''
   isRegistering.value = false
   // 3. 返回 cookie 信息
-  return {
-    cookie: cookies.get('auth'),
-    localData: users.value.find(u => u.username === form.username)
-  }
+  // return {
+  //   cookie: cookies.get('auth'),
+  //   localData: users.value.find(u => u.username === form.username)
+  // }
 }
 
 </script>

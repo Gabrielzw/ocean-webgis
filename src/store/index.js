@@ -10,21 +10,32 @@ import { setToken, removeToken} from '~/composables/auth'
 // todos: [],
 
 // 存储了用户的信息，页面状态等
-const appStore = defineStore('app', {
-    state: () => {
-        return {
-            token: useLocalStorage('users', ''),
+export const appStore = defineStore('app', {
+    state: () => ({
+        username: '',
+        isLoggegIn: false,
+        isLoading: false,
+    }),
+    getters: {
+        // 获取用户信息
+        userInfo(state){
+            return state.username;
         }
     },
-    getters: {
-        
-    },
     actions: {
-        
+        // 更新用户信息
+        updateUserInfo(userInfo){
+            this.username = userInfo.username;
+            this.isLoggegIn = true;
+        },
+
+        // 登出用户
+        logout(){
+            this.username = '';
+            this.isLoggegIn = false;
+        },
     }
 })
-
-export default appStore
 
 
 
