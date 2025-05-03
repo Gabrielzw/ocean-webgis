@@ -141,16 +141,16 @@ const formRef = ref(null)
 const handleLogin = () => {
   formRef.value.validate((valid) => {
     if (valid) {
-      // TODO: 检查用户名和密码是否匹配
       if(!users.value.some(user => user.username == form.username)){
         toast('错误', '用户名不存在！', 'error')
         return false
       }
-      store.updateUserInfo({username: form.username})
-      // 2. 设置 cookie
-      let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) // 生成随机 token
-      setToken(token)
-      //
+      if(users.value.find(user => user.username == form.username).password != form.password){
+        toast('错误', '密码错误！', 'error')
+        return false
+      }
+
+      store.login({username: form.username})
       toast('成功', '登录成功', 'success')
       router.push('/')
     } else {

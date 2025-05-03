@@ -4,7 +4,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
 
-import { setToken, removeToken} from '~/composables/auth'
+import { setToken, removeToken } from '~/composables/auth'
 
 // /** @type {{ text: string, id: number, isFinished: boolean }[]} */
 // todos: [],
@@ -13,28 +13,35 @@ import { setToken, removeToken} from '~/composables/auth'
 export const appStore = defineStore('app', {
     state: () => ({
         username: '',
-        isLoggegIn: false,
+        isLoggedIn: false,
         isLoading: false,
     }),
     getters: {
         // 获取用户信息
-        userInfo(state){
+        userInfo(state) {
             return state.username;
         }
     },
     actions: {
         // 更新用户信息
-        updateUserInfo(userInfo){
+        updateUserInfo(userInfo) {
             this.username = userInfo.username;
-            this.isLoggegIn = true;
+            this.isLoggedIn = true;
         },
-
+        // 登录用户
+        login(userInfo) {
+            this.updateUserInfo(userInfo);
+            // 设置 cookie
+            let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) // 生成随机 token
+            setToken(token)
+        },
         // 登出用户
-        logout(){
+        logout() {
             this.username = '';
-            this.isLoggegIn = false;
+            this.isLoggedIn = false;
         },
-    }
+    },
+    persist: true,
 })
 
 
