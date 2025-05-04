@@ -1,5 +1,8 @@
 <template>
-    <el-drawer v-model="showDrawer" title="修改密码" size="45%" :close-on-click-modal="false">
+    <el-drawer v-model="showDrawer" 
+        :title="title" 
+        :size="size" 
+        :close-on-click-modal="false">
         <div class="formDrawer">
             
         </div>
@@ -17,6 +20,18 @@ import { ElMessage } from 'element-plus';
 import { useLocalStorage } from "@vueuse/core";
 
 const showDrawer = ref(false)
+
+const props = defineProps({
+    title: String,
+    size: {
+        type: String,
+        default: '45%',
+    },
+    destoryOnClose: { // 关闭时销毁组件
+        type: Boolean,
+        default: false,
+    }
+}); // 接收父组件传递的参数
 
 const open = () => showDrawer.value = true; // 打开抽屉
 const close = () => showDrawer.value = false; // 关闭抽屉
