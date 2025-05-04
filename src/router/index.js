@@ -4,15 +4,22 @@ import About from '~/views/AboutView.vue'
 import NotFound from '~/views/404.vue'
 import Login from '~/views/login.vue'
 
-import FIndex from '../layouts/FIndex.vue'
+import Admin from '../layouts/admin.vue'
 import AboutView from '../views/AboutView.vue'
 import component from 'element-plus/es/components/tree-select/src/tree-select-option.mjs'
 
 const routes = [
   { 
     path: '/', 
-    component: Index,
-    meta: { title: '首页' }, 
+    component: Admin,
+    // 子路由
+    children:[
+      {
+        path: '/',
+        component: Index,
+        meta: { title: '首页' },
+      },
+    ], 
   },
   { 
     path: '/about', 

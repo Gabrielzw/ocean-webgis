@@ -138,7 +138,7 @@ const rules = {
 const formRef = ref(null)
 
 const handleLogin = () => {
-  console.log('handleLogin')
+  // console.log('handleLogin')
   formRef.value.validate((valid) => {
     if (valid) {
       if (!users.value.some(user => user.username == form.username)) {
