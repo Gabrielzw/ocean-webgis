@@ -17,7 +17,7 @@ export default defineConfig({
   ],
   server: {
     host: '0.0.0.0', // 允许所有 IP 访问
-    port: 5173,      // 指定端口号
+    port: 5174,      // 指定端口号
     strictPort: false, // 端口占用时直接退出
   },
 

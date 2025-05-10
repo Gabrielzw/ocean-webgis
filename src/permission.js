@@ -19,7 +19,7 @@ router.beforeEach((to, from, next)=>{
 
     // 防止重复登录
     if(token && to.path == '/login'){
-        return next({ path: from.path ? from.path : '/' })
+        return next({ path: from.path ? from.path : '/map' })
     }
 
     // 设置页面标题

@@ -152,7 +152,7 @@ const handleLogin = () => {
 
       store.login({ username: form.username })
       toast('成功', '登录成功', 'success')
-      router.push('/')
+      router.push('/map')
     } else {
       toast('错误', '请输入正确的用户名和密码', 'error')
       return false

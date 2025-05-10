@@ -15,6 +15,8 @@ export const appStore = defineStore('app', {
         username: '',
         isLoggedIn: false,
         isLoading: false,
+        // 侧边栏宽度
+        asideWidth: '250px', // 展开宽度,
     }),
     getters: {
         // 获取用户信息
@@ -41,6 +43,10 @@ export const appStore = defineStore('app', {
             this.isLoggedIn = false;
             removeToken();
         },
+        // 切换侧边栏
+        toggleAside() {
+            this.asideWidth = this.asideWidth === '250px' ? '64px' : '250px';
+        }
     },
     persist: true,
 })

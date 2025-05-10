@@ -6,8 +6,11 @@
         <!-- <ElemeFilled /> -->
       </el-icon>
       渤海赤潮检测与预测系统
-
     </span>
+    <el-icon class="collapse-btn" @click="store.toggleAside()">
+        <fold v-if="store.asideWidth == '250px'"/>
+        <Expand v-else/>
+    </el-icon>
 
     <div class="ml-auto flex items-center">
       <el-dropdown class="dropdown" @command="handleCommand">
@@ -46,10 +49,10 @@
       </el-form-item>
     </el-form>
 
-    <el-row class="flex-row-reverse">    
-        <el-button round color="#e11d48" type="primary" @click="handleCancel">取 消</el-button>
-        <el-button class="mr-2" round color="#626aef" type="primary" @click="handleSubmit">提 交</el-button>
-      
+    <el-row class="flex-row-reverse">
+      <el-button round color="#e11d48" type="primary" @click="handleCancel">取 消</el-button>
+      <el-button class="mr-2" round color="#626aef" type="primary" @click="handleSubmit">提 交</el-button>
+
     </el-row>
   </el-drawer>
 
@@ -66,35 +69,18 @@ import { useRouter } from "vue-router";
 import FormDrawer from "~/components/FormDrawer.vue";
 import { appStore } from '~/store/index.js';
 import { toast } from "~/composables/util";
-import { showModal } from '~/composables/util'
+import { useRepassword, useLogout } from "~/composables/useManager";
 
-const store = appStore();
+const { form, formRef, rules } = useRepassword()
+const { handleLogout } = useLogout()
+
+const store = appStore()
 const router = useRouter()
 
 const formDrawerRef = ref(null); // 引用 FormDrawer 组件实例
 const showDrawer = ref(false)
 
 const users = useLocalStorage('users', [])
-
-const form = reactive({
-  oldPassword: '',
-  newPassword: '',
-  confirmPassword: '',
-})
-
-const formRef = ref(null)
-
-const rules = {
-  oldPassword: [
-    { required: true, message: '密码不能为空', trigger: 'blur' },
-  ],
-  newPassword: [
-    { required: true, message: '密码不能为空', trigger: 'blur' },
-  ],
-  confirmPassword: [
-    { required: true, message: '密码不能为空', trigger: 'blur' },
-  ],
-}
 
 const handleSubmit = () => {
   formRef.value.validate((valid) => {
@@ -106,7 +92,7 @@ const handleSubmit = () => {
         toast('错误', '旧密码错误', 'error')
         return false
       }
-      if (user.password === form.newPassword){
+      if (user.password === form.newPassword) {
         toast('错误', '新密码不能与旧密码相同', 'error')
         return false
       }
@@ -116,17 +102,17 @@ const handleSubmit = () => {
       }
       // 更新密码
       users.value[userIndex] = {
-      ...user,
-      password: form.newPassword,
-      updatedAt: new Date().toISOString() // 添加更新时间
+        ...user,
+        password: form.newPassword,
+        updatedAt: new Date().toISOString() // 添加更新时间
       }
 
       // 重置表单
       formRef.value.resetFields()
 
-      toast('成功', '密码修改成功','success')
+      toast('成功', '密码修改成功', 'success')
       showDrawer.value = false;
-      
+
       // 可选：密码修改后强制重新登录
       store.logout()
       router.push('/login')
@@ -145,16 +131,13 @@ const handleCommand = (command) => {
       // formDrawerRef.value.open();
       break;
     case 'logout':
-      showModal('是否要退出登录？').then(res => {
-        store.logout();
-        router.push('/login');
-        toast('成功', '已退出登录', 'success');
-      })
+      handleLogout()
       break;
     default:
       break;
   }
 }
+
 
 
 </script>
@@ -175,5 +158,14 @@ const handleCommand = (command) => {
   height: 64px;
   cursor: pointer;
   @apply flex justify-center items-center mx-5;
+}
+.collapse-btn{
+  @apply flex justify-center items-center ml-4;
+  width: 64px;
+  height: 64px;
+  cursor: pointer;
+}
+.collapse-btn:hover{
+  @apply bg-indigo-600;
 }
 </style>

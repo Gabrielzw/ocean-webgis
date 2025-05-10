@@ -5,6 +5,7 @@ import NotFound from '~/views/404.vue'
 import Login from '~/views/login.vue'
 
 import Admin from '../layouts/admin.vue'
+import Map from '~/views/map.vue'
 import AboutView from '../views/AboutView.vue'
 import component from 'element-plus/es/components/tree-select/src/tree-select-option.mjs'
 
@@ -14,11 +15,21 @@ const routes = [
     component: Admin,
     // 子路由
     children:[
+      // {
+      //   path: '/sss',
+      //   component: Index,
+      //   meta: { title: '首页' },
+      // },
       {
         path: '/',
-        component: Index,
-        meta: { title: '首页' },
+        component: Map,
+        meta: { title: '地图' },
       },
+      {
+        path: '/map',
+        component: Map,
+        meta: { title: '地图' },
+      }
     ], 
   },
   { 
@@ -36,11 +47,6 @@ const routes = [
     component: NotFound,
     meta: { title: '404' },
   }
-  // {
-  //   path: '/login',
-  //   component: Login,
-  //   meta: { title: '登录' }
-  // }, 
 ]
 
 const router = createRouter({
