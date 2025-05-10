@@ -24,6 +24,7 @@ const routes = [
         path: '/',
         component: Map,
         meta: { title: '地图' },
+        redirect: '/map',
       },
       {
         path: '/map',
