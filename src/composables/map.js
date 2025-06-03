@@ -2,11 +2,9 @@ import { ref, computed } from 'vue';
 import { toStringHDMS } from 'ol/coordinate.js';
 import { toLonLat } from 'ol/proj.js';
 
-export async function setupMapClickHandler(map, sicLayer, pixel, store) {
-
+export async function setupMapClickHandler(sicLayer, pixel, store) {
     const currentDate = store.currentDate; // 获取当前日期
     const currentRegion = store.mapStatus.activeRegion; // 获取当前区域
-
     // 获取海冰浓度值
     const sicData = await sicLayer.getData(pixel);
     let iceCon = '0';
@@ -27,8 +25,6 @@ export async function setupMapClickHandler(map, sicLayer, pixel, store) {
         date: formatDate(currentDate), // 格式化日期
         region: currentRegion, // 当前区域
     }
-
-
 }
 
 // 格式化日期

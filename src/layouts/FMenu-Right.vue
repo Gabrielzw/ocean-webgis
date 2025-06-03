@@ -22,15 +22,15 @@
         <h3 class="font-medium text-gray-800 mb-3">Polar Region</h3>
         <div class="bg-gray-100 p-1 rounded-full flex">
           <button
-            @click="handleRegionChange('Arctic')"
+            @click="handleRegionChange('北极')"
             class="flex-1 py-1.5 px-3 rounded-full text-black text-sm font-medium"
-            :class="{ 'bg-[#0891B2]': activeRegion === 'Arctic' }">
+            :class="{ 'bg-[#0891B2]': activeRegion === '北极' }">
             Arctic
           </button>
           <button
-            @click="handleRegionChange('Antarctic')"
+            @click="handleRegionChange('南极')"
             class="flex-1 py-1.5 px-3 rounded-full text-black text-sm font-medium"
-            :class="{ 'bg-[#0891B2]': activeRegion === 'Antarctic' }">
+            :class="{ 'bg-[#0891B2]': activeRegion === '南极' }">
             Antarctic
           </button>
         </div>
@@ -50,7 +50,7 @@ const store = appStore()
 const router = useRouter()
 const route = useRoute()
 
-const activeRegion = ref('Antarctic') // 默认选中南极
+const activeRegion = ref('南极') // 默认选中南极
 
 const handleRegionChange = (region) => {
   activeRegion.value = region;

@@ -24,16 +24,9 @@ export const appStore = defineStore('app', {
             sndLayer: { visible: false, layerOpacity: 1.0, name: '积雪厚度' }, // 积雪厚度
         },
         mapStatus: {
-            activeRegion: 'Antarctic',
+            activeRegion: '南极',
             backgroundColor: '#3f3f41',
         },
-        // currentPixelInfo: {
-        //     lat: '',
-        //     lon: '',
-        //     sic: '',
-        //     date: '',
-        //     region: '',
-        // }
     }),
     getters: {
         // 获取用户信息

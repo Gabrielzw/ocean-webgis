@@ -1,20 +1,20 @@
 <template>
   <div class="root-container">
     <!-- 地图容器 -->
-    <div id="map" ref="mapContainer" class="map-container" @click="openPopup"
+    <div id="map" ref="mapContainer" class="map-container"
       :style="{ backgroundColor: store.mapStatus.backgroundColor }">
       <!-- 弹窗 -->
-      <CustomPopup v-model="showPopup" ref="popupRef" :x="popupOffsetX + 10" :y="popupOffsetY - 165">
-        <!-- :lat="popupLat" :lon="popupLon"
-      :sic="popupSic" :date="popupDate" :region="popupRegion" -->
-        <div class="flex items-center justify-between">
-          <span class="text-sm text-[#000]">图层信息</span>
-          <close-small @click="closePopup" theme="filled" size="16" fill="#0891B2" class="hover:bg-gray-300" />
-        </div>
-        <div class="">
-
-        </div>
-      </CustomPopup>
+      <CustomPopup v-model="showPopup" ref="popupRef" :x="popupOffsetX" :y="popupOffsetY" :width="15" :height="8">
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-[#000]">{{ popupRegion }}</span>
+            <close-small @click="closePopup" theme="filled" size="16" fill="#0891B2" class="hover:bg-gray-300" />
+          </div>
+          <div class="flex flex-col py-2 items-start">
+            <span class="text-xs text-[#000]">坐标：{{ popupLat }} , {{ popupLon }}</span>
+            <span class="text-xs text-[#000]">数据时间：{{ popupDate }}</span>
+            <span class="text-xs text-[#000]">海冰浓度：{{ popupSic }}</span>
+          </div>
+        </CustomPopup>
       <!-- 加载动画 -->
       <div v-if="isLoading" class="map-loader">
         <div class="loading-spinner">
@@ -103,7 +103,8 @@ import TileArcGISRest from 'ol/source/TileArcGISRest';
 import proj4 from 'proj4';
 import { register } from 'ol/proj/proj4';
 import { fromEPSGCode } from 'ol/proj/proj4';
-import { fromLonLat, toLonLat, toStringHDMS } from 'ol/proj';
+import { toStringHDMS } from 'ol/coordinate';
+import { fromLonLat, toLonLat } from 'ol/proj';
 
 import { setupMapClickHandler, formatDate } from '~/composables/map';
 import CustomPopup from '~/components/CustomPopup.vue';
@@ -139,35 +140,39 @@ const popupLat = ref('0');  // 弹窗纬度
 const popupLon = ref('0');  // 弹窗经度
 const popupSic = ref('0%'); // 弹窗海冰浓度
 const popupDate = ref('2025-01-01'); // 弹窗日期
-const popupRegion = ref('Antarctic'); // 弹窗区域
+const popupRegion = ref('南极'); // 弹窗区域
 
-const openPopup = async (event) => {
-  console.log(event);
-  let pixel = null;
-  let lat = null;
-  let lon = null;
-  map.value.on('click', async function () {
-    const coordinate = evt.coordinate;
-    pixel = map.getPixelFromCoordinate(coordinate);
-    const lonLat = toLonLat(coordinate, map.getView().getProjection());
+const openPopup = async (evt) => {
+  const coordinate = evt.coordinate;
+  const pixel = map.value.getPixelFromCoordinate(coordinate);
+  const lonLat = toLonLat(coordinate, map.value.getView().getProjection());
+  // 格式化经纬度
+  const hdms = toStringHDMS(lonLat);
+  const lat = hdms.slice(0, 13);
+  const lon = hdms.slice(14, 28);
+  const { sic, date, region } = await setupMapClickHandler(sicLayer.value, pixel, store);
 
-    // 格式化经纬度
-    const hdms = toStringHDMS(lonLat);
-    lat = hdms.slice(0, 13);
-    lon = hdms.slice(14, 27);
-  });
-  const {sic, date, region } = await setupMapClickHandler(map.value, sicLayer.value, pixel, store);
+  // 使用视口相对位置
+  const viewport = map.value.getViewport().getBoundingClientRect();
+  // 确保弹窗不会超出视口边界
+  let safeX = 0, safeY = 0;
+  if (viewport['x'] + evt.pixel[0] + 15 > viewport['width']) {
+    console.log('sss')
+    safeX = viewport['x'] + evt.pixel[0] - 250;
+  } else {
+    safeX = Math.max((320 + 240) / 16, viewport['x'] + evt.pixel[0] + 15);
+  }
+  safeY = Math.max((64 + 240) / 16, viewport['y'] + evt.pixel[1] - 140);
 
-  console.log(currentPixelInfo); // 打印点击位置的信息，用于调试
-  popupOffsetX.value = event.clientX; // 记录点击位置的 x 坐标
-  popupOffsetY.value = event.clientY; // 记录点击位置的 y 坐标
+  popupOffsetX.value = safeX; // 记录点击位置的 x 坐标
+  popupOffsetY.value = safeY; // 记录点击位置的 y 坐标
   popupLat.value = lat; // 记录点击位置的纬度
   popupLon.value = lon; // 记录点击位置的经度
   popupSic.value = sic; // 记录点击位置的海冰浓度
   popupDate.value = date; // 记录点击位置的日期
   popupRegion.value = region; // 记录点击位置的区域
 
-  popupRef.value.openModal(event);
+  popupRef.value.openModal();
 };
 
 const closePopup = () => {
@@ -262,7 +267,7 @@ const baseLayer = new TileLayer({
 watch(
   () => store.mapStatus.activeRegion,
   async (newRegion) => {
-    if (newRegion === 'Arctic') {
+    if (newRegion === '北极') {
       const bgColor = '#232227';
       store.setMapBackgroundColor(bgColor);
 
@@ -312,7 +317,7 @@ const updateSeaIceConLayer = async (date) => {
     });
     date = formatDate(date);
     let url = '';
-    if (store.mapStatus.activeRegion === 'Arctic') {
+    if (store.mapStatus.activeRegion === '北极') {
       url = `https://ocean.cn-sy1.rains3.com/north-sic/${date}.tif`;
     } else {
       url = `https://ocean.cn-sy1.rains3.com/south-sic/${date}.tif`;
@@ -403,6 +408,8 @@ onMounted(async () => {
 
   // 初始化加载默认日期的SST
   await updateSeaIceConLayer(store.currentDate);
+  // 添加点击事件
+  map.value.on('click', openPopup);
 });
 
 onBeforeUnmount(() => {
