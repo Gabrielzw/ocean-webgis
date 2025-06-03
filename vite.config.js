@@ -6,13 +6,19 @@ import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
-  resolve:{
-    alias:{
+  resolve: {
+    alias: {
       "~": path.resolve(__dirname, "src"),
     }
   },
   plugins: [
-    vue(),
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => tag.startsWith('iconpark-')
+        }
+      }
+    }),
     WindiCSS(),
   ],
   server: {

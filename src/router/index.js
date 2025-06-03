@@ -6,6 +6,7 @@ import Login from '~/views/login.vue'
 
 import Admin from '../layouts/admin.vue'
 import Map from '~/views/map.vue'
+import Setting from '~/views/setting.vue'
 import AboutView from '../views/AboutView.vue'
 import component from 'element-plus/es/components/tree-select/src/tree-select-option.mjs'
 
@@ -16,7 +17,7 @@ const routes = [
     // 子路由
     children:[
       // {
-      //   path: '/sss',
+      //   path: '/',
       //   component: Index,
       //   meta: { title: '首页' },
       // },
@@ -30,6 +31,11 @@ const routes = [
         path: '/map',
         component: Map,
         meta: { title: '地图' },
+      },
+      {
+        path: '/setting',
+        component: Setting,
+        meta: { title: '设置' },
       }
     ], 
   },

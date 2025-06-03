@@ -18,13 +18,13 @@
 
 <script setup>
 import FHeader from '../layouts/FHeader.vue'
-import FMenu from '../layouts/FMenu.vue'
+import FMenu from './FMenu-Left.vue'
 
 </script>
 
 <style scoped>
 .el-aside{
-  width: 200px;
+  width: 432px;
   transition: all 0.2s;
 }
 .layout-container {

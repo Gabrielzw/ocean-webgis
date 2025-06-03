@@ -2,10 +2,15 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 import ElementPlus from 'element-plus'
+
+import './style.css'
+import 'animate.css'
+import './assets/style/fonts.css'
 import 'element-plus/dist/index.css'
 import '@icon-park/vue-next/styles/index.css'
+
 import router from './router'
-import './style.css'
+
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 

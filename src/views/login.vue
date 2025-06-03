@@ -2,8 +2,8 @@
   <el-row class="login-container">
     <el-col :lg="16" :md="12" class="left">
       <div>
-        <div>欢迎使用</div>
-        <div>渤海赤潮监测与预测系统</div>
+        <div class="animate__animated animate__fadeInUp animate__slow">欢迎使用</div>
+        <div class="animate__animated animate__fadeInUp animate__slow animate__delay-1s">{{ config.app.name }}</div>
       </div>
     </el-col>
 
@@ -102,6 +102,7 @@ import { useRouter } from "vue-router";
 import { useLocalStorage } from "@vueuse/core";
 import { useCookies } from '@vueuse/integrations/useCookies';
 
+import config from '~/config.json';
 import { toast } from "~/composables/util";
 import { appStore } from '~/store/index.js';
 

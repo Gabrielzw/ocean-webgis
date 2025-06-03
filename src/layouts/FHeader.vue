@@ -1,18 +1,26 @@
 <template>
   <div class="f-header">
     <span class="logo">
-      <el-icon class="mr-1 mt-0.5">
-        <img src="../assets/ocean-logo.svg" alt="logo">
-        <!-- <ElemeFilled /> -->
-      </el-icon>
-      渤海赤潮检测与预测系统
+      <img src="../assets/pic/snow_flake.gif" class="w-[24px] h-[24px] ml-2 mr-2" alt="logo">
+      <!-- <IcecreamThree class="mr-2" theme="outline" size="24" fill="#ffffff"/> -->
+      <div class="tracking-wider w-full">{{ config.app.name }}</div>
     </span>
-    <el-icon class="collapse-btn" @click="store.toggleAside()">
-        <fold v-if="store.asideWidth == '250px'"/>
-        <Expand v-else/>
-    </el-icon>
 
-    <div class="ml-auto flex items-center">
+    <div class="date-select">
+      {{ formatDate(store.currentDate) }}
+    </div>
+
+    <div class="icons">
+      <!-- <div class="icon settings-icon" title="Settings"></div>
+      <div class="icon upload-icon" title="Upload"></div>
+      <div class="icon user-icon" title="User"></div> -->
+      <Config class="mr-4" theme="outline" size="24" fill="#ffffff"/>
+      <Download class="mr-4" theme="outline" size="24" fill="#ffffff"/>
+      <People class="mr-4" theme="outline" size="24" fill="#ffffff"/>
+    </div>
+
+
+    <!-- <div class="ml-auto flex items-center">
       <el-dropdown class="dropdown" @command="handleCommand">
         <span class="flex items-center text-light-50">
           <el-avatar class="mr-2" :size="25" :src="'https://img.picgo.net/2025/05/04/nozomie77326549efc5250.th.png'" />
@@ -27,8 +35,8 @@
             <el-dropdown-item command="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </template>
-      </el-dropdown>
-    </div>
+</el-dropdown>
+</div> -->
   </div>
 
   <el-drawer v-model="showDrawer" title="修改密码" size="45%" :close-on-click-modal="false">
@@ -65,9 +73,12 @@ import { ref, reactive } from "vue";
 import { ElMessage } from 'element-plus';
 import { useLocalStorage } from "@vueuse/core";
 import { useRouter } from "vue-router";
+import { Config, IcecreamThree, Download, People } from '@icon-park/vue-next'
 
+import config from '~/config.json';
 import FormDrawer from "~/components/FormDrawer.vue";
 import { appStore } from '~/store/index.js';
+import { formatDate } from '~/composables/map';
 import { toast } from "~/composables/util";
 import { useRepassword, useLogout } from "~/composables/useManager";
 
@@ -144,28 +155,34 @@ const handleCommand = (command) => {
 
 <style scoped>
 .f-header {
-  @apply flex items-center bg-indigo-700 text-light-50 fixed top-0 left-0 right-0;
+  @apply flex items-center justify-between bg-gradient-to-r from-[#0A2D5E] to-[#00B4D8] text-light-50 fixed top-0 left-0 right-0;
   height: 64px;
   z-index: 1000;
 }
 
 .logo {
-  width: 250px;
-  @apply flex justify-center items-center text-xl font-thin ml-2;
+  @apply flex justify-center items-center w-[20rem] text-xl font-thin px-2;
+}
+
+.icons {
+  @apply flex flex-row-reverse w-[16rem];
+  gap: 20px;
 }
 
 .f-header .dropdown {
-  height: 64px;
+  height: 48px;
   cursor: pointer;
   @apply flex justify-center items-center mx-5;
 }
-.collapse-btn{
-  @apply flex justify-center items-center ml-4;
+
+.collapse-btn {
+  @apply flex justify-center items-center ml-0;
   width: 64px;
-  height: 64px;
+  height: 48px;
   cursor: pointer;
 }
-.collapse-btn:hover{
+
+.collapse-btn:hover {
   @apply bg-indigo-600;
 }
 </style>

@@ -1,11 +1,13 @@
-import { ElNotification, ElMessageBox } from "element-plus";
+import { createApp, h, ref } from 'vue'
+import { ElNotification, ElMessageBox, ElPopover } from "element-plus";
 import nprogress from "nprogress";
+import CustomPopup from '~/components/CustomPopup.vue';
 
 // 消息提示
 export function toast(
-    title="成功", 
-    message, 
-    type = "success", 
+    title = "成功",
+    message,
+    type = "success",
     dangerouslyUseHTMLString = false) {
     ElNotification({
         title: title,
@@ -16,7 +18,23 @@ export function toast(
     });
 }
 
-export function showModal(content='提示内容', type='warning', title=''){
+let popupInstance = null; // 存储弹窗实例
+
+export function showPopupWindow(
+    title = "信息",
+    message,
+    dangerouslyUseHTMLString = true) {
+    return h(ElPopover, {
+        title: title,
+        content: message,
+        dangerouslyUseHTMLString: dangerouslyUseHTMLString,
+        placement: "top"
+    })
+}
+
+
+
+export function showModal(content = '提示内容', type = 'warning', title = '') {
     return ElMessageBox.confirm(
         content,
         title,
@@ -29,12 +47,12 @@ export function showModal(content='提示内容', type='warning', title=''){
 }
 
 // 显示全屏loading
-export function showFullLoading(){
+export function showFullLoading() {
     nprogress.start();
 }
 
 // 隐藏全屏loading
-export function hideFullLoading(){
+export function hideFullLoading() {
     nprogress.done();
 }
 

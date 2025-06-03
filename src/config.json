@@ -1,0 +1,12 @@
+{
+  "app": {
+    "name": "极地海冰变化分析系统",
+    "version": "1.0.0",
+    "description": "极地海冰变化分析系统",
+    "author": "Gabriel"
+  },
+  "i18n": {
+    "defaultLanguage": "zh-CN",
+    "supportedLanguages": ["zh-CN", "en-US"]
+  }
+}
